@@ -14,17 +14,13 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  const { statusCode = 500 } = error;
-  const { name } = error;
+  let { statusCode = 500 } = error;
+  const { name = '' } = error;
 
   if (name.startsWith('Sequelize')) {
     if (name === 'SequelizeUniqueConstraintError') {
-      statuscode = 400;
+      statusCode = 400;
     }
-  }
-
-  if (name === 'UnauthorizedError') {
-    statusCode = 401;
   }
 
   res.status(statusCode).json({
